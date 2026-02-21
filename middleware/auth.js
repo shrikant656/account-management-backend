@@ -15,7 +15,7 @@ export const authenticateToken = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded;
-    
+
     // Verify user still exists
     if (decoded.role === 'Project Manager') {
       const pm = await ProjectManager.findById(decoded.id);
@@ -28,7 +28,7 @@ export const authenticateToken = async (req, res, next) => {
         return res.status(401).json({ message: 'Invalid token' });
       }
     }
-    
+
     next();
   } catch (error) {
     return res.status(403).json({ message: 'Invalid token' });
@@ -37,10 +37,10 @@ export const authenticateToken = async (req, res, next) => {
 
 export const generateToken = (user) => {
   return jwt.sign(
-    { 
-      id: user._id, 
-      email: user.cognizantEmailId || user.emailId, 
-      role: user.role || 'Project Manager' 
+    {
+      id: user._id,
+      email: user.companyEmailId || user.emailId,
+      role: user.role || 'Project Manager'
     },
     JWT_SECRET,
     { expiresIn: '24h' }

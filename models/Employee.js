@@ -14,7 +14,7 @@ const employeeSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  cognizantEmailId: {
+  companyEmailId: {
     type: String,
     required: true,
     unique: true
@@ -97,7 +97,7 @@ const employeeSchema = new mongoose.Schema({
 });
 
 // Virtual for full name
-employeeSchema.virtual('fullName').get(function() {
+employeeSchema.virtual('fullName').get(function () {
   return `${this.firstName} ${this.lastName}`;
 });
 

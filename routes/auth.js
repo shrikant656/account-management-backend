@@ -35,7 +35,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     } else {
       // Check if it's an employee
-      const employee = await Employee.findOne({ cognizantEmailId: username });
+      const employee = await Employee.findOne({ companyEmailId: username });
       if (employee && employee.password === password) {
         const token = generateToken(employee);
         return res.json({
@@ -43,7 +43,7 @@ router.post('/login', async (req, res) => {
           token,
           user: {
             id: employee._id,
-            email: employee.cognizantEmailId,
+            email: employee.companyEmailId,
             name: `${employee.firstName} ${employee.lastName}`,
             role: employee.role,
             isOnboardingComplete: employee.isOnboardingComplete
@@ -63,14 +63,14 @@ router.get('/profile', async (req, res) => {
   try {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
-    
+
     if (!token) {
       return res.status(401).json({ message: 'No token provided' });
     }
 
     // For simplicity, we'll skip full JWT verification here and just check the user exists
     // In a real app, you'd use the authenticateToken middleware
-    
+
     res.json({ message: 'Profile endpoint - implement JWT verification' });
   } catch (error) {
     console.error('Profile error:', error);

@@ -74,8 +74,8 @@ workspace/
 - **Login**: Username (email), password, and role selection
 - **Roles**: Team Member or Project Manager
 - **Default Credentials**:
-  - **Project Manager**: Raja.RavindraPulimela@cognizant.com / inspirePM@321
-  - **Admin**: Rita.Singh@cognizant.com / inspirePM@321
+  - **Project Manager**: Raja.RavindraPulimela@company.com / inspirePM@321
+  - **Admin**: Rita.Singh@company.com / inspirePM@321
 
 ### 3. Employee Onboarding Process
 
@@ -110,7 +110,7 @@ workspace/
 6. **Validation Check**: System ensures all required documents are uploaded before submission
 7. **Submit**: Complete onboarding process (only allowed with all documents)
 8. **Confirmation**: Redirect to thank you page
-9. **Manager Notification**: Project Manager and Raja.RavindraPulimela@cognizant.com receive completion email with all uploaded documents as attachments
+9. **Manager Notification**: Project Manager and Raja.RavindraPulimela@company.com receive completion email with all uploaded documents as attachments
 
 ## 📧 Email Notifications
 
@@ -125,7 +125,7 @@ workspace/
    - Step-by-step onboarding instructions
    - Professional HTML formatting with clear next steps
 
-2. **Profile Completion**: Sent to project managers AND Raja.RavindraPulimela@cognizant.com when employees complete onboarding with:
+2. **Profile Completion**: Sent to project managers AND Raja.RavindraPulimela@company.com when employees complete onboarding with:
    - Complete employee details and information table
    - **File Attachments**: All uploaded documents attached to email
      - Employee's resume with custom naming: `Resume_FirstName_LastName_OriginalFileName`
@@ -140,11 +140,13 @@ workspace/
 ### PDF Document Attachments:
 
 **For Employee Onboarding Email:**
+
 - **Resume_Format.pdf**: Template for employees to format their resume correctly
-- **Acceptable_Use_Policy_(firstname_lastname).pdf**: Policy document requiring signature
-- **IP_Confidentiality_Agreement_(firstname_lastname).pdf**: Confidentiality agreement requiring signature
+- **Acceptable*Use_Policy*(firstname_lastname).pdf**: Policy document requiring signature
+- **IP*Confidentiality_Agreement*(firstname_lastname).pdf**: Confidentiality agreement requiring signature
 
 **For Manager Completion Email:**
+
 - **Employee's uploaded resume**: With descriptive filename including employee name
 - **Employee's signed policy document**: With descriptive filename including employee name
 - **Employee's signed agreement document**: With descriptive filename including employee name
@@ -167,7 +169,7 @@ workspace/
   employeeId: String (unique),
   firstName: String,
   lastName: String,
-  cognizantEmailId: String (unique),
+  companyEmailId: String (unique),
   role: String (Team Member/Project Manager),
   startDate: Date,
   esaProjectId: String,
@@ -252,12 +254,11 @@ workspace/
 ### Project Managers:
 
 - **Raja Ravindra Pulimela**
-
-  - Email: Raja.RavindraPulimela@cognizant.com
+  - Email: Raja.RavindraPulimela@company.com
   - Password: inspirePM@321
 
 - **Rita Singh**
-  - Email: rita.singh@cognizant.com
+  - Email: rita.singh@company.com
   - Password: inspirePM@321
 
 ### Employees:
@@ -332,8 +333,8 @@ workspace/
 
 - **Mandatory Upload Check**: All three documents must be uploaded before submission
 - **File Type Validation**: Only approved file formats accepted
-- **Visual Progress Indicators**: 
-  - Red asterisk (*) for required fields
+- **Visual Progress Indicators**:
+  - Red asterisk (\*) for required fields
   - Outlined buttons for pending uploads
   - Green contained buttons for completed uploads
   - Success checkmarks with filenames
@@ -354,7 +355,7 @@ workspace/
   - Real-time: Immediate validation on date change
   - Submission: Final validation before API call
 - **File Upload Validation**: Comprehensive document requirement enforcement:
-  - Required field indicators with red asterisks (*)
+  - Required field indicators with red asterisks (\*)
   - Dynamic button styling (outlined → contained green when uploaded)
   - Visual upload progress with checkmarks and filenames
   - Error prevention with clear missing document messages

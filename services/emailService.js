@@ -18,7 +18,7 @@ export const sendOnboardingEmail = async (
   employeeData,
   applicationUrl = 'http://localhost:5173'
 ) => {
-  const { firstName, lastName, cognizantEmailId } = employeeData;
+  const { firstName, lastName, companyEmailId } = employeeData;
 
   // Define the PDF attachments from inspire-docs folder
   const docsPath = path.join(__dirname, '..', 'inspire-docs');
@@ -58,17 +58,17 @@ export const sendOnboardingEmail = async (
   }
 
   // Create the HTML content based on attachment availability
-  const documentStatusText = attachments.length === 0 
+  const documentStatusText = attachments.length === 0
     ? '<p style="color: #ff6b6b; font-style: italic;"><strong>Note:</strong> Documents will be available in the application or contact your Project Manager for the documents.</p>'
     : '<p style="color: #28a745; font-style: italic;"><strong>✓</strong> All required documents are attached to this email.</p>';
-    
-  const nextStepsText = attachments.length > 0 
+
+  const nextStepsText = attachments.length > 0
     ? 'Download the attached PDF documents'
     : 'Contact your Project Manager to get the required documents';
 
   const mailOptions = {
     from: 'inspire0656@gmail.com',
-    to: cognizantEmailId,
+    to: companyEmailId,
     subject: 'Welcome to Inspire Brands - Onboarding Process Initiated',
     attachments: attachments,
     html: `
@@ -104,7 +104,7 @@ export const sendOnboardingEmail = async (
 
         <div style="background-color: #f5f5f5; padding: 15px; border-radius: 4px; margin: 20px 0;">
           <h3>🔐 Your Login Credentials:</h3>
-          <p><strong>Username:</strong> ${cognizantEmailId}</p>
+          <p><strong>Username:</strong> ${companyEmailId}</p>
           <p><strong>Password:</strong> inspire@123</p>
         </div>
 
@@ -125,14 +125,14 @@ export const sendOnboardingEmail = async (
     return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error('Error sending onboarding email with attachments:', error);
-    
+
     // If attachments fail, try sending without attachments
     if (attachments.length > 0) {
       console.log('Attempting to send email without attachments...');
       try {
         const mailOptionsWithoutAttachments = {
           from: 'inspire0656@gmail.com',
-          to: cognizantEmailId,
+          to: companyEmailId,
           subject: 'Welcome to Inspire Brands - Onboarding Process Initiated',
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -167,7 +167,7 @@ export const sendOnboardingEmail = async (
 
               <div style="background-color: #f5f5f5; padding: 15px; border-radius: 4px; margin: 20px 0;">
                 <h3>🔐 Your Login Credentials:</h3>
-                <p><strong>Username:</strong> ${cognizantEmailId}</p>
+                <p><strong>Username:</strong> ${companyEmailId}</p>
                 <p><strong>Password:</strong> inspire@123</p>
               </div>
 
@@ -194,9 +194,9 @@ export const sendOnboardingEmail = async (
 };
 
 export const sendEmployeeDetailsToManager = async (employeeData, pmEmails) => {
-  const { firstName, lastName, cognizantEmailId } = employeeData;
+  const { firstName, lastName, companyEmailId } = employeeData;
 
-  // Ensure pmEmails is an array and always includes Raja.RavindraPulimela@cognizant.com
+  // Ensure pmEmails is an array and always includes Raja.RavindraPulimela@company.com
   let emailRecipients = [];
   if (Array.isArray(pmEmails)) {
     emailRecipients = [...pmEmails];
@@ -204,15 +204,15 @@ export const sendEmployeeDetailsToManager = async (employeeData, pmEmails) => {
     emailRecipients = [pmEmails];
   }
 
-  // Always include Raja.RavindraPulimela@cognizant.com if not already present
-  const rajaEmail = 'Raja.RavindraPulimela@cognizant.com';
+  // Always include Raja.RavindraPulimela@company.com if not already present
+  const rajaEmail = 'Raja.RavindraPulimela@company.com';
   if (!emailRecipients.includes(rajaEmail)) {
     emailRecipients.push(rajaEmail);
   }
 
   // Prepare attachments from employee's uploaded files
   const attachments = [];
-  
+
   if (employeeData.resumeFile && employeeData.resumeFile.path) {
     attachments.push({
       filename: `Resume_${firstName}_${lastName}_${employeeData.resumeFile.originalName}`,
@@ -252,40 +252,31 @@ export const sendEmployeeDetailsToManager = async (employeeData, pmEmails) => {
   // Create employee details HTML
   const employeeDetailsHtml = `
     <table style="border-collapse: collapse; width: 100%;">
-      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Employee ID:</td><td style="border: 1px solid #ddd; padding: 8px;">${
-        employeeData.employeeId
-      }</td></tr>
+      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Employee ID:</td><td style="border: 1px solid #ddd; padding: 8px;">${employeeData.employeeId
+    }</td></tr>
       <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Name:</td><td style="border: 1px solid #ddd; padding: 8px;">${firstName} ${lastName}</td></tr>
-      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Email:</td><td style="border: 1px solid #ddd; padding: 8px;">${cognizantEmailId}</td></tr>
-      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Role:</td><td style="border: 1px solid #ddd; padding: 8px;">${
-        employeeData.role
-      }</td></tr>
+      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Email:</td><td style="border: 1px solid #ddd; padding: 8px;">${companyEmailId}</td></tr>
+      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Role:</td><td style="border: 1px solid #ddd; padding: 8px;">${employeeData.role
+    }</td></tr>
       <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Start Date:</td><td style="border: 1px solid #ddd; padding: 8px;">${new Date(
-        employeeData.startDate
-      ).toLocaleDateString()}</td></tr>
-      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">ESA Project ID:</td><td style="border: 1px solid #ddd; padding: 8px;">${
-        employeeData.esaProjectId
-      }</td></tr>
-      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">ESA Project Name:</td><td style="border: 1px solid #ddd; padding: 8px;">${
-        employeeData.esaProjectName
-      }</td></tr>
-      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Inspire SOW Number:</td><td style="border: 1px solid #ddd; padding: 8px;">${
-        employeeData.inspireSowNumber
-      }</td></tr>
-      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Birthday:</td><td style="border: 1px solid #ddd; padding: 8px;">${
-        employeeData.birthday
-          ? new Date(employeeData.birthday).toLocaleDateString()
-          : 'Not provided'
-      }</td></tr>
-      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Phone Number:</td><td style="border: 1px solid #ddd; padding: 8px;">${
-        employeeData.phoneNumber || 'Not provided'
-      }</td></tr>
-      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Location:</td><td style="border: 1px solid #ddd; padding: 8px;">${
-        employeeData.location || 'Not provided'
-      }</td></tr>
-      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Account Status:</td><td style="border: 1px solid #ddd; padding: 8px;">${
-        employeeData.accountStatus
-      }</td></tr>
+      employeeData.startDate
+    ).toLocaleDateString()}</td></tr>
+      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">ESA Project ID:</td><td style="border: 1px solid #ddd; padding: 8px;">${employeeData.esaProjectId
+    }</td></tr>
+      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">ESA Project Name:</td><td style="border: 1px solid #ddd; padding: 8px;">${employeeData.esaProjectName
+    }</td></tr>
+      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Inspire SOW Number:</td><td style="border: 1px solid #ddd; padding: 8px;">${employeeData.inspireSowNumber
+    }</td></tr>
+      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Birthday:</td><td style="border: 1px solid #ddd; padding: 8px;">${employeeData.birthday
+      ? new Date(employeeData.birthday).toLocaleDateString()
+      : 'Not provided'
+    }</td></tr>
+      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Phone Number:</td><td style="border: 1px solid #ddd; padding: 8px;">${employeeData.phoneNumber || 'Not provided'
+    }</td></tr>
+      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Location:</td><td style="border: 1px solid #ddd; padding: 8px;">${employeeData.location || 'Not provided'
+    }</td></tr>
+      <tr><td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Account Status:</td><td style="border: 1px solid #ddd; padding: 8px;">${employeeData.accountStatus
+    }</td></tr>
     </table>
   `;
 
@@ -323,7 +314,7 @@ export const sendEmployeeDetailsToManager = async (employeeData, pmEmails) => {
     return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error('Error sending employee details email with attachments:', error);
-    
+
     // If attachments fail, try sending without attachments
     if (attachments.length > 0) {
       console.log('Attempting to send manager email without attachments...');
@@ -370,11 +361,11 @@ export const sendEmployeeDetailsToManager = async (employeeData, pmEmails) => {
 };
 
 export const sendStatusChangeEmail = async (employeeData, newStatus) => {
-  const { firstName, lastName, cognizantEmailId } = employeeData;
+  const { firstName, lastName, companyEmailId } = employeeData;
 
   const mailOptions = {
     from: 'inspire0656@gmail.com',
-    to: cognizantEmailId,
+    to: companyEmailId,
     subject: 'Account Status Update - Inspire Brands',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

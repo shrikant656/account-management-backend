@@ -12,7 +12,7 @@ async function initializeDB() {
     // Create default project managers
     const defaultPMs = [
       {
-        emailId: 'Raja.RavindraPulimela@cognizant.com',
+        emailId: 'Raja.RavindraPulimela@company.com',
         password: 'inspirePM@321',
         name: 'Raja Ravindra Pulimela',
         isAdmin: true,
@@ -30,7 +30,7 @@ async function initializeDB() {
         isAdmin: true,
       },
       {
-        emailId: 'Rita.Singh@cognizant.com',
+        emailId: 'Rita.Singh@company.com',
         password: 'inspirePM@321',
         name: 'Rita Singh',
         isAdmin: true,

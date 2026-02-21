@@ -23,13 +23,13 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ 
+const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png|pdf|doc|docx/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = allowedTypes.test(file.mimetype);
-    
+
     if (mimetype && extname) {
       return cb(null, true);
     } else {
@@ -50,7 +50,7 @@ router.post('/register', upload.fields([
       employeeId,
       firstName,
       lastName,
-      cognizantEmailId,
+      companyEmailId,
       role,
       startDate,
       esaProjectId,
@@ -62,22 +62,22 @@ router.post('/register', upload.fields([
     } = req.body;
 
     // Validate required fields
-    if (!employeeId || !firstName || !lastName || !cognizantEmailId || !role || 
-        !startDate || !esaProjectId || !esaProjectName || !inspireSowNumber || 
-        !projectManagerName || !projectManagerEmailId) {
-      return res.status(400).json({ 
-        message: 'All required fields must be filled' 
+    if (!employeeId || !firstName || !lastName || !companyEmailId || !role ||
+      !startDate || !esaProjectId || !esaProjectName || !inspireSowNumber ||
+      !projectManagerName || !projectManagerEmailId) {
+      return res.status(400).json({
+        message: 'All required fields must be filled'
       });
     }
 
     // Check if employee already exists
-    const existingEmployee = await Employee.findOne({ 
-      $or: [{ employeeId }, { cognizantEmailId }] 
+    const existingEmployee = await Employee.findOne({
+      $or: [{ employeeId }, { companyEmailId }]
     });
-    
+
     if (existingEmployee) {
-      return res.status(400).json({ 
-        message: 'Employee with this ID or email already exists' 
+      return res.status(400).json({
+        message: 'Employee with this ID or email already exists'
       });
     }
 
@@ -86,7 +86,7 @@ router.post('/register', upload.fields([
       employeeId,
       firstName,
       lastName,
-      cognizantEmailId,
+      companyEmailId,
       role,
       startDate: new Date(startDate),
       esaProjectId,
@@ -109,7 +109,7 @@ router.post('/register', upload.fields([
           path: file.path
         };
       }
-      
+
       if (req.files.policyFile) {
         const file = req.files.policyFile[0];
         employeeData.policyFile = {
@@ -120,7 +120,7 @@ router.post('/register', upload.fields([
           path: file.path
         };
       }
-      
+
       if (req.files.agreementFile) {
         const file = req.files.agreementFile[0];
         employeeData.agreementFile = {
@@ -139,32 +139,32 @@ router.post('/register', upload.fields([
 
     // Send onboarding email
     const emailResult = await sendOnboardingEmail(employeeData);
-    
+
     if (emailResult.success) {
-      const message = emailResult.warning 
+      const message = emailResult.warning
         ? 'Employee registered successfully and onboarding email sent (without attachments - contact IT if needed)'
         : 'Employee registered successfully and onboarding email sent';
-        
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         message: message,
         employee: {
           id: employee._id,
           employeeId: employee.employeeId,
           name: `${employee.firstName} ${employee.lastName}`,
-          email: employee.cognizantEmailId
+          email: employee.companyEmailId
         },
         emailWarning: emailResult.warning || null
       });
     } else {
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         message: 'Employee registered successfully but email failed to send',
         employee: {
           id: employee._id,
           employeeId: employee.employeeId,
           name: `${employee.firstName} ${employee.lastName}`,
-          email: employee.cognizantEmailId
+          email: employee.companyEmailId
         },
         emailError: emailResult.error
       });
@@ -199,7 +199,7 @@ router.put('/update/:id', upload.fields([
 ]), async (req, res) => {
   try {
     const { birthday, phoneNumber, location } = req.body;
-    
+
     const employee = await Employee.findById(req.params.id);
     if (!employee) {
       return res.status(404).json({ message: 'Employee not found' });
@@ -222,7 +222,7 @@ router.put('/update/:id', upload.fields([
           path: file.path
         };
       }
-      
+
       if (req.files.policyFile) {
         const file = req.files.policyFile[0];
         employee.policyFile = {
@@ -233,7 +233,7 @@ router.put('/update/:id', upload.fields([
           path: file.path
         };
       }
-      
+
       if (req.files.agreementFile) {
         const file = req.files.agreementFile[0];
         employee.agreementFile = {
@@ -250,11 +250,11 @@ router.put('/update/:id', upload.fields([
     await employee.save();
 
     // Send email to project manager
-    const emailRecipients = [employee.projectManagerEmailId, 'Raja.RavindraPulimela@cognizant.com'];
+    const emailRecipients = [employee.projectManagerEmailId, 'Raja.RavindraPulimela@company.com'];
     const emailResult = await sendEmployeeDetailsToManager(employee, emailRecipients);
 
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       message: 'Employee details updated successfully',
       emailSent: emailResult.success
     });
@@ -280,7 +280,7 @@ router.get('/list', authenticateToken, async (req, res) => {
 router.put('/status/:id', authenticateToken, async (req, res) => {
   try {
     const { accountStatus } = req.body;
-    
+
     if (!['In Progress', 'Completed', 'Hold'].includes(accountStatus)) {
       return res.status(400).json({ message: 'Invalid status' });
     }
@@ -296,8 +296,8 @@ router.put('/status/:id', authenticateToken, async (req, res) => {
     // Send status change email to employee
     const emailResult = await sendStatusChangeEmail(employee, accountStatus);
 
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       message: 'Employee status updated successfully',
       emailSent: emailResult.success
     });
@@ -313,22 +313,22 @@ router.get('/birthdays', async (req, res) => {
   try {
     const today = new Date();
     const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
-    
+
     const employees = await Employee.find({
       birthday: { $exists: true, $ne: null }
-    }).select('firstName lastName cognizantEmailId birthday');
+    }).select('firstName lastName companyEmailId birthday');
 
     // Filter employees with birthdays in the next 30 days
     const upcomingBirthdays = employees.filter(emp => {
       if (!emp.birthday) return false;
-      
+
       const birthday = new Date(emp.birthday);
       const thisYearBirthday = new Date(today.getFullYear(), birthday.getMonth(), birthday.getDate());
-      
+
       if (thisYearBirthday < today) {
         thisYearBirthday.setFullYear(today.getFullYear() + 1);
       }
-      
+
       return thisYearBirthday <= nextMonth;
     }).sort((a, b) => {
       const birthdayA = new Date(today.getFullYear(), new Date(a.birthday).getMonth(), new Date(a.birthday).getDate());

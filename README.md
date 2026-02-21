@@ -1,6 +1,6 @@
-# Inspire Brands - Employee Onboarding & Offboarding Application
+# Food brands - Employee Onboarding & Offboarding Application
 
-A comprehensive React.js and Node.js application for managing employee onboarding and offboarding processes at Inspire Brands.
+A comprehensive React.js and Node.js application for managing employee onboarding and offboarding processes at Food brands.
 
 ## 🚀 Features
 
@@ -65,7 +65,7 @@ workspace/
 
 ### 1. Homepage
 
-- Welcome message for Inspire Brands
+- Welcome message for Food brands
 - Display of all brand logos (Arby's, Baskin Robbins, Buffalo Wild Wings, Jimmy Johns, Sonic)
 - Upcoming birthdays section (top 3 employees)
 
@@ -379,7 +379,7 @@ workspace/
 
 ## 🤝 Contributing
 
-This application was built as a comprehensive onboarding solution for Inspire Brands. For modifications or enhancements, please follow the existing code structure and patterns.
+This application was built as a comprehensive onboarding solution for Food brands. For modifications or enhancements, please follow the existing code structure and patterns.
 
 ## 📞 Support
 
@@ -391,4 +391,4 @@ For technical support or questions about the application:
 
 ---
 
-**Built with ❤️ for Inspire Brands Team**
+**Built with ❤️ for Food brands Team**

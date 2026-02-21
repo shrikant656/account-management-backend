@@ -45,7 +45,7 @@ app.use('/api/uploads', uploadRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {
-  res.json({ message: 'Inspire Brands Backend is running!' });
+  res.json({ message: 'Food brands Backend is running!' });
 });
 
 app.listen(PORT, () => {

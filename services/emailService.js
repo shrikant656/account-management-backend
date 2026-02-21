@@ -69,11 +69,11 @@ export const sendOnboardingEmail = async (
   const mailOptions = {
     from: 'inspire0656@gmail.com',
     to: companyEmailId,
-    subject: 'Welcome to Inspire Brands - Onboarding Process Initiated',
+    subject: 'Welcome to Food brands - Onboarding Process Initiated',
     attachments: attachments,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #d32f2f;">Welcome to Inspire Brands!</h2>
+        <h2 style="color: #d32f2f;">Welcome to Food brands!</h2>
         <p>Hi <strong>${firstName} ${lastName}</strong>,</p>
         <p>Your onboarding process has been initiated. Please find the required documents information below:</p>
         
@@ -112,7 +112,7 @@ export const sendOnboardingEmail = async (
           <p><strong>⚠️ Important:</strong> Please ensure all documents are properly signed and uploaded before your start date. Contact your Project Manager if you have any questions.</p>
         </div>
 
-        <p>Best regards,<br>Inspire Brands HR Team</p>
+        <p>Best regards,<br>Food brands HR Team</p>
       </div>
     `,
   };
@@ -133,10 +133,10 @@ export const sendOnboardingEmail = async (
         const mailOptionsWithoutAttachments = {
           from: 'inspire0656@gmail.com',
           to: companyEmailId,
-          subject: 'Welcome to Inspire Brands - Onboarding Process Initiated',
+          subject: 'Welcome to Food brands - Onboarding Process Initiated',
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #d32f2f;">Welcome to Inspire Brands!</h2>
+              <h2 style="color: #d32f2f;">Welcome to Food brands!</h2>
               <p>Hi <strong>${firstName} ${lastName}</strong>,</p>
               <p>Your onboarding process has been initiated. Please contact your Project Manager to get the required documents.</p>
               
@@ -175,7 +175,7 @@ export const sendOnboardingEmail = async (
                 <p><strong>⚠️ Important:</strong> Please ensure all documents are properly signed and uploaded before your start date. Contact your Project Manager if you have any questions.</p>
               </div>
 
-              <p>Best regards,<br>Inspire Brands HR Team</p>
+              <p>Best regards,<br>Food brands HR Team</p>
             </div>
           `,
         };
@@ -302,7 +302,7 @@ export const sendEmployeeDetailsToManager = async (employeeData, pmEmails) => {
           <p><strong>✅ Action Required:</strong> Please review the attached documents and update the employee's account status in the Project Manager dashboard as needed.</p>
         </div>
         
-        <p>Best regards,<br>Inspire Brands System</p>
+        <p>Best regards,<br>Food brands System</p>
       </div>
     `,
   };
@@ -342,7 +342,7 @@ export const sendEmployeeDetailsToManager = async (employeeData, pmEmails) => {
                 <p><strong>✅ Action Required:</strong> Please review the employee's documents in the system and update their account status in the Project Manager dashboard as needed.</p>
               </div>
               
-              <p>Best regards,<br>Inspire Brands System</p>
+              <p>Best regards,<br>Food brands System</p>
             </div>
           `,
         };
@@ -366,14 +366,14 @@ export const sendStatusChangeEmail = async (employeeData, newStatus) => {
   const mailOptions = {
     from: 'inspire0656@gmail.com',
     to: companyEmailId,
-    subject: 'Account Status Update - Inspire Brands',
+    subject: 'Account Status Update - Food brands',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #d32f2f;">Account Status Update</h2>
         <p>Hi <strong>${firstName} ${lastName}</strong>,</p>
         <p>Your account status has been updated to: <strong>${newStatus}</strong></p>
         <p>If you have any questions, please contact your Project Manager.</p>
-        <p>Best regards,<br>Inspire Brands HR Team</p>
+        <p>Best regards,<br>Food brands HR Team</p>
       </div>
     `,
   };
